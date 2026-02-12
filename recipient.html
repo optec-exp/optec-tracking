@@ -452,7 +452,7 @@
       apiParams.delete_ids = pendingDeletes.join(',');
     }
 
-    callAPI('batch_update', apiParams, function(data) {
+    callAPI('save_changes', apiParams, function(data) {
       btn.disabled = false;
       btn.textContent = '\uD83D\uDCBE 変更を保存';
       if (data.success) {
