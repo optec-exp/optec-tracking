@@ -43,12 +43,7 @@
     .awb-info-icon { font-size: 24px; }
     .awb-info-label { font-size: 11px; color: #64748b; }
     .awb-info-value { font-size: 15px; font-weight: 600; color: #1a365d; font-family: 'Courier New', monospace; }
-    .section-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #1a365d;
-      margin-bottom: 12px;
-    }
+    .section-title { font-size: 13px; font-weight: 600; color: #1a365d; margin-bottom: 12px; }
     .recipient-list { margin-bottom: 24px; }
     .recipient-item {
       display: flex;
@@ -59,6 +54,17 @@
       border-radius: 8px;
       margin-bottom: 8px;
       border: 1px solid #e2e8f0;
+      transition: opacity 0.3s;
+    }
+    .recipient-item.deleted {
+      opacity: 0.4;
+      text-decoration: line-through;
+      background-color: #fef2f2;
+      border-color: #fecaca;
+    }
+    .recipient-item.new-item {
+      background-color: #f0fdf4;
+      border-color: #bbf7d0;
     }
     .recipient-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
     .recipient-avatar {
@@ -77,18 +83,20 @@
     .recipient-details { flex: 1; min-width: 0; }
     .recipient-email { font-size: 14px; color: #1e293b; font-weight: 500; word-break: break-all; }
     .recipient-date { font-size: 11px; color: #94a3b8; margin-top: 2px; }
-    .recipient-delete {
+    .recipient-action {
       background: none;
       border: none;
-      color: #94a3b8;
       cursor: pointer;
       padding: 8px;
       border-radius: 6px;
-      font-size: 16px;
+      font-size: 14px;
       flex-shrink: 0;
       transition: all 0.2s;
     }
-    .recipient-delete:hover { background-color: #fee2e2; color: #dc2626; }
+    .btn-delete { color: #94a3b8; }
+    .btn-delete:hover { background-color: #fee2e2; color: #dc2626; }
+    .btn-undo { color: #3b82f6; font-size: 12px; font-weight: 500; }
+    .btn-undo:hover { background-color: #eff6ff; }
     .add-form {
       background-color: #f8fafc;
       border-radius: 8px;
@@ -96,8 +104,9 @@
       border: 1px dashed #cbd5e1;
     }
     .form-label { display: block; font-size: 12px; font-weight: 500; color: #475569; margin-bottom: 6px; }
+    .form-row { display: flex; gap: 8px; }
     .form-input {
-      width: 100%;
+      flex: 1;
       padding: 10px 14px;
       border: 1px solid #e2e8f0;
       border-radius: 6px;
@@ -106,10 +115,27 @@
       transition: border-color 0.2s;
     }
     .form-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+    .btn-local-add {
+      padding: 10px 16px;
+      background-color: #e2e8f0;
+      color: #475569;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-local-add:hover { background-color: #cbd5e1; }
     .form-hint { font-size: 11px; color: #94a3b8; margin-top: 6px; }
-    .btn-add {
-      width: 100%;
-      padding: 12px;
+    .footer {
+      padding: 16px 24px;
+      background-color: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+    .footer-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 10px; }
+    .btn-save {
+      padding: 12px 32px;
       background-color: #1a365d;
       color: white;
       border: none;
@@ -117,22 +143,12 @@
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 12px;
       transition: background-color 0.2s;
     }
-    .btn-add:hover { background-color: #2c5282; }
-    .btn-add:disabled { background-color: #94a3b8; cursor: not-allowed; }
-    .footer {
-      padding: 16px 24px;
-      background-color: #f8fafc;
-      border-top: 1px solid #e2e8f0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .footer-note { font-size: 11px; color: #94a3b8; }
-    .btn-close {
-      padding: 10px 24px;
+    .btn-save:hover { background-color: #2c5282; }
+    .btn-save:disabled { background-color: #94a3b8; cursor: not-allowed; }
+    .btn-cancel {
+      padding: 12px 24px;
       background-color: #e2e8f0;
       color: #475569;
       border: none;
@@ -141,7 +157,19 @@
       font-weight: 500;
       cursor: pointer;
     }
-    .btn-close:hover { background-color: #cbd5e1; }
+    .btn-cancel:hover { background-color: #cbd5e1; }
+    .footer-note { font-size: 11px; color: #94a3b8; }
+    .change-count {
+      display: none;
+      background-color: #fef3c7;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: #92400e;
+    }
+    .change-count.visible { display: block; }
     .toast {
       display: none;
       position: fixed;
@@ -172,11 +200,9 @@
 </head>
 <body>
 
-<!-- エラー表示（トークン無効時） -->
+<!-- エラー表示 -->
 <div class="container" id="error-container" style="display: none;">
-  <div class="header">
-    <h2>&#x1F6A8; リンクが無効です</h2>
-  </div>
+  <div class="header"><h2>&#x26A0;&#xFE0F; リンクが無効です</h2></div>
   <div class="error-page">
     <p>このリンクは期限切れか、無効です。<br>最新のメール通知に含まれるリンクをご利用ください。</p>
   </div>
@@ -198,6 +224,10 @@
       </div>
     </div>
 
+    <!-- 変更通知バー -->
+    <div class="change-count" id="change-count"></div>
+
+    <!-- 受信者一覧 -->
     <div class="recipient-list">
       <div class="section-title" id="list-title">&#x1F4E7; 現在の受信者</div>
       <div id="recipient-container">
@@ -205,20 +235,26 @@
       </div>
     </div>
 
+    <!-- 追加フォーム -->
     <div class="add-form">
       <div class="section-title">&#xFF0B; 新しい受信者を追加</div>
       <div>
         <label class="form-label">メールアドレス</label>
-        <input type="email" class="form-input" id="new-email" placeholder="example@company.com">
+        <div class="form-row">
+          <input type="email" class="form-input" id="new-email" placeholder="example@company.com">
+          <button class="btn-local-add" onclick="addLocal()">追加</button>
+        </div>
       </div>
       <div class="form-hint">※ 追加された方には次回の更新から通知が届きます</div>
-      <button class="btn-add" id="btn-add" onclick="addRecipient()">&#xFF0B; 受信者を追加する</button>
     </div>
   </div>
 
   <div class="footer">
+    <div class="footer-buttons">
+      <button class="btn-cancel" onclick="window.close()">キャンセル</button>
+      <button class="btn-save" id="btn-save" onclick="submitChanges()">&#x1F4BE; 変更を保存</button>
+    </div>
     <div class="footer-note">&#x1F512; セキュリティのため、このリンクは15日間有効です</div>
-    <button class="btn-close" onclick="window.close()">閉じる</button>
   </div>
 </div>
 
@@ -230,19 +266,19 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ★ GAS Web App URL
+  // ★ GAS Web App URL — デプロイ後に更新
   var GAS_URL = 'https://script.google.com/macros/s/AKfycbzFDjURVq8OxW2uWY75F1PFMFUXHnv-NmphwzF4NVVbW1FIAUngAAjMOj3OPP5K7xcO/exec';
 
-  // URL パラメータからトークン取得
   var params = new URLSearchParams(window.location.search);
   var TOKEN = params.get('token') || '';
 
+  // ローカル変更管理
+  var pendingAdds = [];     // 追加予定のメールアドレス配列
+  var pendingDeletes = [];  // 削除予定の recipient_id 配列
+  var originalRecipients = [];  // サーバーから取得した元データ
+
   window.onload = function() {
-    if (!TOKEN) {
-      showError();
-      return;
-    }
-    // トークン検証
+    if (!TOKEN) { showError(); return; }
     callAPI('validate_token', { token: TOKEN }, function(data) {
       if (data.success) {
         document.getElementById('awb-display').textContent = data.awb_display;
@@ -252,17 +288,14 @@
       } else {
         showError();
       }
-    }, function() {
-      showError();
-    });
+    }, function() { showError(); });
   };
 
-  // Enter キーで追加
   document.addEventListener('DOMContentLoaded', function() {
     var input = document.getElementById('new-email');
     if (input) {
       input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') addRecipient();
+        if (e.key === 'Enter') addLocal();
       });
     }
   });
@@ -273,13 +306,17 @@
     document.getElementById('error-container').style.display = 'block';
   }
 
+  // ===== サーバーからデータ取得（1回だけ） =====
   function loadRecipients() {
     var container = document.getElementById('recipient-container');
     container.innerHTML = '<div class="loading">読み込み中...</div>';
 
     callAPI('list_recipients', { token: TOKEN }, function(data) {
       if (data.success) {
-        renderRecipients(data.recipients);
+        originalRecipients = data.recipients;
+        pendingAdds = [];
+        pendingDeletes = [];
+        renderAll();
       } else {
         container.innerHTML = '<div class="empty-state">データの取得に失敗しました</div>';
       }
@@ -288,94 +325,155 @@
     });
   }
 
-  function renderRecipients(recipients) {
-    var container = document.getElementById('recipient-container');
-    var title = document.getElementById('list-title');
-    title.textContent = '\uD83D\uDCE7 現在の受信者（' + recipients.length + '名）';
+  // ===== ローカル操作 =====
+  function addLocal() {
+    var input = document.getElementById('new-email');
+    var email = input.value.trim().toLowerCase();
+    if (!email) { showToast('メールアドレスを入力してください', 'error'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('正しいメールアドレスを入力してください', 'error'); return; }
 
-    if (recipients.length === 0) {
-      container.innerHTML = '<div class="empty-state">受信者がいません</div>';
-      return;
+    // 既存チェック
+    for (var i = 0; i < originalRecipients.length; i++) {
+      if (originalRecipients[i].email.toLowerCase() === email && pendingDeletes.indexOf(originalRecipients[i].recipient_id) === -1) {
+        showToast('既に登録されています', 'error'); return;
+      }
+    }
+    // pending追加チェック
+    if (pendingAdds.indexOf(email) !== -1) {
+      showToast('既に追加予定です', 'error'); return;
     }
 
+    pendingAdds.push(email);
+    input.value = '';
+    renderAll();
+  }
+
+  function markDelete(recipientId) {
+    pendingDeletes.push(recipientId);
+    renderAll();
+  }
+
+  function undoDelete(recipientId) {
+    pendingDeletes = pendingDeletes.filter(function(id) { return id !== recipientId; });
+    renderAll();
+  }
+
+  function undoAdd(email) {
+    pendingAdds = pendingAdds.filter(function(e) { return e !== email; });
+    renderAll();
+  }
+
+  // ===== 画面描画 =====
+  function renderAll() {
+    var container = document.getElementById('recipient-container');
+    var title = document.getElementById('list-title');
+
+    var activeCount = 0;
     var html = '';
-    for (var i = 0; i < recipients.length; i++) {
-      var r = recipients[i];
+
+    // 既存受信者
+    for (var i = 0; i < originalRecipients.length; i++) {
+      var r = originalRecipients[i];
+      var isDeleted = pendingDeletes.indexOf(r.recipient_id) !== -1;
       var initial = r.email.charAt(0).toUpperCase();
       var dateStr = r.created_at ? formatDate(r.created_at) : '';
-      var subText = dateStr ? '追加日: ' + dateStr : '';
-      if (r.added_by === 'EMAIL_LINK') {
-        subText += subText ? ' · メールリンクから追加' : 'メールリンクから追加';
-      }
 
-      html += '<div class="recipient-item" id="rcpt-' + r.recipient_id + '">';
+      html += '<div class="recipient-item' + (isDeleted ? ' deleted' : '') + '">';
       html += '  <div class="recipient-info">';
       html += '    <div class="recipient-avatar">' + escapeHtml(initial) + '</div>';
       html += '    <div class="recipient-details">';
       html += '      <div class="recipient-email">' + escapeHtml(r.email) + '</div>';
-      if (subText) html += '      <div class="recipient-date">' + escapeHtml(subText) + '</div>';
+      if (dateStr) html += '      <div class="recipient-date">追加日: ' + dateStr + '</div>';
       html += '    </div>';
       html += '  </div>';
-      html += '  <button class="recipient-delete" onclick="deleteRecipient(\'' + r.recipient_id + '\', \'' + escapeHtml(r.email) + '\')" title="削除">&#x1F5D1;&#xFE0F;</button>';
+      if (isDeleted) {
+        html += '  <button class="recipient-action btn-undo" onclick="undoDelete(\'' + r.recipient_id + '\')">元に戻す</button>';
+      } else {
+        html += '  <button class="recipient-action btn-delete" onclick="markDelete(\'' + r.recipient_id + '\')" title="削除">&#x1F5D1;&#xFE0F;</button>';
+        activeCount++;
+      }
       html += '</div>';
     }
 
+    // 追加予定
+    for (var j = 0; j < pendingAdds.length; j++) {
+      var email = pendingAdds[j];
+      var init = email.charAt(0).toUpperCase();
+      html += '<div class="recipient-item new-item">';
+      html += '  <div class="recipient-info">';
+      html += '    <div class="recipient-avatar" style="background-color: #dcfce7; color: #166534;">' + escapeHtml(init) + '</div>';
+      html += '    <div class="recipient-details">';
+      html += '      <div class="recipient-email">' + escapeHtml(email) + '</div>';
+      html += '      <div class="recipient-date" style="color: #166534;">新規追加</div>';
+      html += '    </div>';
+      html += '  </div>';
+      html += '  <button class="recipient-action btn-undo" onclick="undoAdd(\'' + escapeHtml(email) + '\')">取消</button>';
+      html += '</div>';
+      activeCount++;
+    }
+
+    if (originalRecipients.length === 0 && pendingAdds.length === 0) {
+      html = '<div class="empty-state">受信者がいません</div>';
+    }
+
     container.innerHTML = html;
+    title.textContent = '\uD83D\uDCE7 現在の受信者（' + activeCount + '名）';
+
+    // 変更カウント表示
+    var totalChanges = pendingAdds.length + pendingDeletes.length;
+    var changeBar = document.getElementById('change-count');
+    if (totalChanges > 0) {
+      var parts = [];
+      if (pendingAdds.length > 0) parts.push(pendingAdds.length + '件の追加');
+      if (pendingDeletes.length > 0) parts.push(pendingDeletes.length + '件の削除');
+      changeBar.textContent = '⚠ 未保存の変更: ' + parts.join('、');
+      changeBar.className = 'change-count visible';
+    } else {
+      changeBar.className = 'change-count';
+    }
   }
 
-  function addRecipient() {
-    var input = document.getElementById('new-email');
-    var email = input.value.trim();
-    if (!email) {
-      showToast('メールアドレスを入力してください', 'error');
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showToast('正しいメールアドレスを入力してください', 'error');
+  // ===== 一括保存 =====
+  function submitChanges() {
+    if (pendingAdds.length === 0 && pendingDeletes.length === 0) {
+      showToast('変更がありません', 'error');
       return;
     }
 
-    var btn = document.getElementById('btn-add');
+    var btn = document.getElementById('btn-save');
     btn.disabled = true;
-    btn.textContent = '追加中...';
+    btn.textContent = '保存中...';
 
-    callAPI('add_recipient', { token: TOKEN, email: email }, function(data) {
+    var apiParams = { token: TOKEN };
+    if (pendingAdds.length > 0) {
+      apiParams.add_emails = pendingAdds.join(',');
+    }
+    if (pendingDeletes.length > 0) {
+      apiParams.delete_ids = pendingDeletes.join(',');
+    }
+
+    callAPI('batch_update', apiParams, function(data) {
       btn.disabled = false;
-      btn.textContent = '\uFF0B 受信者を追加する';
+      btn.textContent = '\uD83D\uDCBE 変更を保存';
       if (data.success) {
-        showToast('✓ ' + email + ' を追加しました', 'success');
-        input.value = '';
+        var msg = '保存しました';
+        if (data.added > 0) msg += '（追加: ' + data.added + '件';
+        if (data.deleted > 0) msg += (data.added > 0 ? '、' : '（') + '削除: ' + data.deleted + '件';
+        if (data.added > 0 || data.deleted > 0) msg += '）';
+        showToast('✓ ' + msg, 'success');
+        // サーバーから再取得
         loadRecipients();
       } else {
-        if (data.error === 'Already exists') {
-          showToast('このメールアドレスは既に登録されています', 'error');
-        } else {
-          showToast('追加に失敗しました: ' + (data.error || ''), 'error');
-        }
+        showToast('保存に失敗しました: ' + (data.error || ''), 'error');
       }
     }, function() {
       btn.disabled = false;
-      btn.textContent = '\uFF0B 受信者を追加する';
+      btn.textContent = '\uD83D\uDCBE 変更を保存';
       showToast('通信エラーが発生しました', 'error');
     });
   }
 
-  function deleteRecipient(recipientId, email) {
-    if (!confirm(email + ' を受信者リストから削除しますか？')) return;
-
-    callAPI('delete_recipient', { token: TOKEN, recipient_id: recipientId }, function(data) {
-      if (data.success) {
-        showToast('✓ ' + email + ' を削除しました', 'success');
-        loadRecipients();
-      } else {
-        showToast('削除に失敗しました', 'error');
-      }
-    }, function() {
-      showToast('通信エラーが発生しました', 'error');
-    });
-  }
-
-  // ===== GAS API 呼び出し =====
+  // ===== API呼び出し =====
   function callAPI(action, params, onSuccess, onError) {
     var url = GAS_URL + '?action=' + encodeURIComponent(action);
     for (var key in params) {
@@ -383,47 +481,25 @@
         url += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
       }
     }
-
     fetch(url, { method: 'GET', redirect: 'follow' })
-      .then(function(response) {
-        // GAS は 302 リダイレクトする場合あり
-        return response.text();
-      })
+      .then(function(r) { return r.text(); })
       .then(function(text) {
-        try {
-          var data = JSON.parse(text);
-          onSuccess(data);
-        } catch (e) {
-          // GAS リダイレクト後の HTML が返る場合がある
-          // リダイレクト先を再取得
-          if (text.indexOf('DOCTYPE') !== -1) {
-            onError();
-          } else {
-            onError();
-          }
-        }
+        try { onSuccess(JSON.parse(text)); }
+        catch (e) { if (onError) onError(); }
       })
-      .catch(function(err) {
-        if (onError) onError(err);
-      });
+      .catch(function(err) { if (onError) onError(err); });
   }
 
   // ===== ユーティリティ =====
   function formatDate(isoStr) {
-    try {
-      var d = new Date(isoStr);
-      return (d.getMonth() + 1) + '/' + d.getDate();
-    } catch (e) {
-      return '';
-    }
+    try { var d = new Date(isoStr); return (d.getMonth() + 1) + '/' + d.getDate(); }
+    catch (e) { return ''; }
   }
-
   function escapeHtml(str) {
     var div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
   }
-
   function showToast(message, type) {
     var toast = document.getElementById('toast');
     toast.textContent = message;
