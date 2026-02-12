@@ -62,127 +62,97 @@
       background-color: #fef2f2;
       border-color: #fecaca;
     }
-    .recipient-item.new-item {
+    .recipient-item.new-added {
       background-color: #f0fdf4;
       border-color: #bbf7d0;
     }
     .recipient-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
     .recipient-avatar {
-      width: 36px;
-      height: 36px;
+      width: 36px; height: 36px;
       background-color: #e2e8f0;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 600;
-      color: #64748b;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600; color: #64748b; flex-shrink: 0;
     }
     .recipient-details { flex: 1; min-width: 0; }
     .recipient-email { font-size: 14px; color: #1e293b; font-weight: 500; word-break: break-all; }
     .recipient-date { font-size: 11px; color: #94a3b8; margin-top: 2px; }
-    .recipient-action {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 6px;
-      font-size: 14px;
-      flex-shrink: 0;
-      transition: all 0.2s;
+    .recipient-delete {
+      background: none; border: none; color: #94a3b8;
+      cursor: pointer; padding: 8px; border-radius: 6px;
+      font-size: 16px; flex-shrink: 0; transition: all 0.2s;
     }
-    .btn-delete { color: #94a3b8; }
-    .btn-delete:hover { background-color: #fee2e2; color: #dc2626; }
-    .btn-undo { color: #3b82f6; font-size: 12px; font-weight: 500; }
-    .btn-undo:hover { background-color: #eff6ff; }
+    .recipient-delete:hover { background-color: #fee2e2; color: #dc2626; }
+    .recipient-undo {
+      background: none; border: 1px solid #3b82f6; color: #3b82f6;
+      cursor: pointer; padding: 4px 10px; border-radius: 6px;
+      font-size: 11px; flex-shrink: 0;
+    }
+    .recipient-undo:hover { background-color: #eff6ff; }
     .add-form {
       background-color: #f8fafc;
       border-radius: 8px;
       padding: 16px;
       border: 1px dashed #cbd5e1;
+      margin-bottom: 16px;
     }
     .form-label { display: block; font-size: 12px; font-weight: 500; color: #475569; margin-bottom: 6px; }
-    .form-row { display: flex; gap: 8px; }
     .form-input {
-      flex: 1;
-      padding: 10px 14px;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s;
+      width: 100%; padding: 10px 14px;
+      border: 1px solid #e2e8f0; border-radius: 6px;
+      font-size: 14px; outline: none; transition: border-color 0.2s;
     }
     .form-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
-    .btn-local-add {
-      padding: 10px 16px;
-      background-color: #e2e8f0;
-      color: #475569;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .btn-local-add:hover { background-color: #cbd5e1; }
     .form-hint { font-size: 11px; color: #94a3b8; margin-top: 6px; }
-    .footer {
-      padding: 16px 24px;
-      background-color: #f8fafc;
-      border-top: 1px solid #e2e8f0;
+    .btn-add-email {
+      width: 100%; padding: 10px;
+      background-color: #f8fafc; color: #1a365d;
+      border: 1px solid #cbd5e1; border-radius: 6px;
+      font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px;
     }
-    .footer-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 10px; }
-    .btn-save {
-      padding: 12px 32px;
-      background-color: #1a365d;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    .btn-save:hover { background-color: #2c5282; }
-    .btn-save:disabled { background-color: #94a3b8; cursor: not-allowed; }
-    .btn-cancel {
-      padding: 12px 24px;
-      background-color: #e2e8f0;
-      color: #475569;
-      border: none;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-    .btn-cancel:hover { background-color: #cbd5e1; }
-    .footer-note { font-size: 11px; color: #94a3b8; }
-    .change-count {
+    .btn-add-email:hover { background-color: #e2e8f0; }
+    .changes-bar {
       display: none;
-      background-color: #fef3c7;
+      background-color: #fffbeb;
       border: 1px solid #fde68a;
-      border-radius: 6px;
-      padding: 8px 12px;
+      border-radius: 8px;
+      padding: 12px 16px;
       margin-bottom: 16px;
       font-size: 12px;
       color: #92400e;
     }
-    .change-count.visible { display: block; }
+    .changes-bar.visible { display: block; }
+    .footer {
+      padding: 16px 24px;
+      background-color: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .footer-note { font-size: 11px; color: #94a3b8; flex: 1; }
+    .btn-save {
+      padding: 10px 28px;
+      background-color: #059669; color: white;
+      border: none; border-radius: 6px;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .btn-save:hover { background-color: #047857; }
+    .btn-save:disabled { background-color: #94a3b8; cursor: not-allowed; }
+    .btn-close {
+      padding: 10px 20px;
+      background-color: #e2e8f0; color: #475569;
+      border: none; border-radius: 6px;
+      font-size: 13px; font-weight: 500; cursor: pointer;
+    }
+    .btn-close:hover { background-color: #cbd5e1; }
     .toast {
-      display: none;
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      z-index: 100;
-      color: white;
+      display: none; position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%); padding: 12px 24px;
+      border-radius: 8px; font-size: 14px; font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); z-index: 100; color: white;
     }
     .toast.success { background-color: #059669; }
     .toast.error { background-color: #dc2626; }
@@ -193,94 +163,145 @@
     }
     .loading { text-align: center; padding: 40px; color: #94a3b8; font-size: 14px; }
     .empty-state { text-align: center; padding: 20px; color: #94a3b8; font-size: 13px; }
-    .error-page { text-align: center; padding: 60px 20px; }
-    .error-page h2 { font-size: 20px; color: #1a365d; margin-bottom: 12px; }
-    .error-page p { font-size: 14px; color: #64748b; line-height: 1.6; }
   </style>
 </head>
 <body>
 
-<!-- エラー表示 -->
+<!-- エラー画面 -->
 <div class="container" id="error-container" style="display: none;">
-  <div class="header"><h2>&#x26A0;&#xFE0F; リンクが無効です</h2></div>
-  <div class="error-page">
-    <p>このリンクは期限切れか、無効です。<br>最新のメール通知に含まれるリンクをご利用ください。</p>
+  <div class="header">
+    <h2 id="err-title">&#x26A0;&#xFE0F; リンクが無効です</h2>
+  </div>
+  <div style="text-align: center; padding: 60px 20px;">
+    <p id="err-desc" style="font-size: 14px; color: #64748b; line-height: 1.6;"></p>
   </div>
 </div>
 
 <!-- メイン画面 -->
 <div class="container" id="main-container" style="display: none;">
   <div class="header">
-    <h2>&#x1F465; 追跡通知の受信者管理</h2>
-    <p>この貨物のステータス更新を受け取る方を管理できます</p>
+    <h2 id="hdr-title">&#x1F465;</h2>
+    <p id="hdr-subtitle"></p>
   </div>
 
   <div class="body-content">
     <div class="awb-info">
       <div class="awb-info-icon">&#x1F4E6;</div>
       <div>
-        <div class="awb-info-label">対象AWB</div>
+        <div class="awb-info-label" id="awb-label"></div>
         <div class="awb-info-value" id="awb-display">---</div>
       </div>
     </div>
 
-    <!-- 変更通知バー -->
-    <div class="change-count" id="change-count"></div>
+    <div class="changes-bar" id="changes-bar"></div>
 
-    <!-- 受信者一覧 -->
     <div class="recipient-list">
-      <div class="section-title" id="list-title">&#x1F4E7; 現在の受信者</div>
+      <div class="section-title" id="list-title"></div>
       <div id="recipient-container">
-        <div class="loading">読み込み中...</div>
+        <div class="loading" id="loading-text"></div>
       </div>
     </div>
 
-    <!-- 追加フォーム -->
     <div class="add-form">
-      <div class="section-title">&#xFF0B; 新しい受信者を追加</div>
+      <div class="section-title" id="add-title"></div>
       <div>
-        <label class="form-label">メールアドレス</label>
-        <div class="form-row">
-          <input type="email" class="form-input" id="new-email" placeholder="example@company.com">
-          <button class="btn-local-add" onclick="addLocal()">追加</button>
-        </div>
+        <label class="form-label" id="email-label"></label>
+        <input type="email" class="form-input" id="new-email" placeholder="example@company.com">
       </div>
-      <div class="form-hint">※ 追加された方には次回の更新から通知が届きます</div>
+      <div class="form-hint" id="add-hint"></div>
+      <button class="btn-add-email" id="btn-add-email" onclick="addEmailLocal()"></button>
     </div>
   </div>
 
   <div class="footer">
-    <div class="footer-buttons">
-      <button class="btn-cancel" onclick="window.close()">キャンセル</button>
-      <button class="btn-save" id="btn-save" onclick="submitChanges()">&#x1F4BE; 変更を保存</button>
-    </div>
-    <div class="footer-note">&#x1F512; セキュリティのため、このリンクは15日間有効です</div>
+    <div class="footer-note" id="footer-note"></div>
+    <button class="btn-close" id="btn-close" onclick="window.close()"></button>
+    <button class="btn-save" id="btn-save" onclick="saveChanges()" disabled></button>
   </div>
 </div>
 
 <!-- ローディング -->
 <div class="container" id="loading-container">
-  <div class="loading" style="padding: 80px 20px;">読み込み中...</div>
+  <div class="loading" style="padding: 80px 20px;" id="initial-loading"></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // ★ GAS Web App URL — デプロイ後に更新
+  // ★ GAS Web App URL（デプロイ後に更新）
   var GAS_URL = 'https://script.google.com/macros/s/AKfycbwCSYW1c40EI7nm8GPm0tHaq2vSfZG0LFPZPYE7RTKZs8hVRWMJW44LKqRjh8Ptk_eQ/exec';
 
   var params = new URLSearchParams(window.location.search);
   var TOKEN = params.get('token') || '';
 
-  // ローカル変更管理
-  var pendingAdds = [];     // 追加予定のメールアドレス配列
-  var pendingDeletes = [];  // 削除予定の recipient_id 配列
-  var originalRecipients = [];  // サーバーから取得した元データ
+  // ===== 多言語辞書 =====
+  var I18N = {
+    page_title:          { ja: '追跡通知の受信者管理', en: 'Manage Tracking Recipients', zh: '追踪通知收件人管理' },
+    page_subtitle:       { ja: 'この貨物のステータス更新を受け取る方を管理できます', en: 'Manage who receives status updates for this shipment', zh: '管理该货物状态更新的接收人' },
+    page_awb_label:      { ja: '対象AWB', en: 'Target AWB', zh: '目标AWB' },
+    page_current:        { ja: '現在の受信者', en: 'Current Recipients', zh: '当前收件人' },
+    page_no_recipients:  { ja: '受信者がいません', en: 'No recipients', zh: '暂无收件人' },
+    page_add_title:      { ja: '新しい受信者を追加', en: 'Add New Recipient', zh: '添加新收件人' },
+    page_email_label:    { ja: 'メールアドレス', en: 'Email Address', zh: '邮箱地址' },
+    page_add_hint:       { ja: '※ 追加された方には次回の更新から通知が届きます', en: '* Recipients will be notified from the next update', zh: '※ 添加的收件人将从下次更新起收到通知' },
+    page_add_button:     { ja: '＋ リストに追加', en: '+ Add to List', zh: '＋ 添加到列表' },
+    page_save:           { ja: '変更を保存', en: 'Save Changes', zh: '保存更改' },
+    page_cancel:         { ja: 'キャンセル', en: 'Cancel', zh: '取消' },
+    page_close:          { ja: '閉じる', en: 'Close', zh: '关闭' },
+    page_security:       { ja: '🔒 セキュリティのため、このリンクは15日間有効です', en: '🔒 This link is valid for 15 days', zh: '🔒 出于安全考虑，此链接有效期为15天' },
+    page_unsaved:        { ja: '⚠ 未保存の変更があります。「変更を保存」ボタンを押してください。', en: '⚠ You have unsaved changes. Press "Save Changes".', zh: '⚠ 有未保存的更改，请点击"保存更改"。' },
+    page_added_date:     { ja: '追加日', en: 'Added', zh: '添加日期' },
+    page_from_link:      { ja: 'メールリンクから追加', en: 'Added via email link', zh: '通过邮件链接添加' },
+    page_new_unsaved:    { ja: '新規追加（未保存）', en: 'New (unsaved)', zh: '新增（未保存）' },
+    page_undo:           { ja: '元に戻す', en: 'Undo', zh: '撤销' },
+    page_invalid_title:  { ja: '⚠️ リンクが無効です', en: '⚠️ Invalid Link', zh: '⚠️ 链接无效' },
+    page_invalid_desc:   { ja: 'このリンクは期限切れか、無効です。\n最新のメール通知に含まれるリンクをご利用ください。', en: 'This link has expired or is invalid.\nPlease use the link from your latest notification email.', zh: '此链接已过期或无效。\n请使用最新通知邮件中的链接。' },
+    page_loading:        { ja: '読み込み中...', en: 'Loading...', zh: '加载中...' },
+    page_saving:         { ja: '保存中...', en: 'Saving...', zh: '保存中...' },
+    page_toast_added:    { ja: 'リストに追加しました（未保存）', en: 'Added to list (unsaved)', zh: '已添加到列表（未保存）' },
+    page_exists:         { ja: 'このメールアドレスは既に登録されています', en: 'This email is already registered', zh: '该邮箱已注册' },
+    page_pending:        { ja: 'このメールアドレスは既に追加予定です', en: 'This email is already pending', zh: '该邮箱已在待添加列表中' },
+    page_enter_email:    { ja: 'メールアドレスを入力してください', en: 'Please enter an email', zh: '请输入邮箱地址' },
+    page_invalid_email:  { ja: '正しいメールアドレスを入力してください', en: 'Please enter a valid email', zh: '请输入有效的邮箱地址' },
+    page_save_ok:        { ja: 'しました', en: ' completed', zh: '完成' },
+    page_count_add:      { ja: '名追加', en: ' added', zh: '人已添加' },
+    page_count_del:      { ja: '名削除', en: ' removed', zh: '人已删除' },
+    page_save_fail:      { ja: '保存に失敗しました', en: 'Save failed', zh: '保存失败' },
+    page_net_err:        { ja: '通信エラーが発生しました', en: 'Network error', zh: '网络错误' },
+    page_del_confirm:    { ja: ' を受信者リストから削除しますか？', en: ' — Remove from recipients?', zh: ' 从收件人列表中删除？' },
+    page_count_unit:     { ja: '名', en: '', zh: '人' },
+    page_load_fail:      { ja: 'データの取得に失敗しました', en: 'Failed to load data', zh: '数据加载失败' }
+  };
 
+  var LANG = 'ja'; // デフォルト
+
+  function t(key) {
+    var entry = I18N[key];
+    if (!entry) return key;
+    return entry[LANG] || entry['ja'] || key;
+  }
+
+  function setLang(langRaw) {
+    var l = String(langRaw || '').trim();
+    if (l === '英語' || l === 'en' || l === 'English') LANG = 'en';
+    else if (l === '中国語' || l === 'zh' || l === '中文') LANG = 'zh';
+    else LANG = 'ja';
+    document.documentElement.lang = LANG === 'zh' ? 'zh-CN' : LANG;
+  }
+
+  // ===== 状態管理 =====
+  var originalRecipients = [];
+  var pendingAdds = [];
+  var pendingDeletes = [];
+
+  // ===== 初期化 =====
   window.onload = function() {
+    document.getElementById('initial-loading').textContent = t('page_loading');
     if (!TOKEN) { showError(); return; }
     callAPI('validate_token', { token: TOKEN }, function(data) {
       if (data.success) {
+        setLang(data.language || '日本語');
+        applyI18n();
         document.getElementById('awb-display').textContent = data.awb_display;
         document.getElementById('loading-container').style.display = 'none';
         document.getElementById('main-container').style.display = 'block';
@@ -293,23 +314,37 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     var input = document.getElementById('new-email');
-    if (input) {
-      input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') addLocal();
-      });
-    }
+    if (input) input.addEventListener('keydown', function(e) { if (e.key === 'Enter') addEmailLocal(); });
   });
 
+  function applyI18n() {
+    document.getElementById('hdr-title').innerHTML = '&#x1F465; ' + t('page_title');
+    document.getElementById('hdr-subtitle').textContent = t('page_subtitle');
+    document.getElementById('awb-label').textContent = t('page_awb_label');
+    document.getElementById('list-title').textContent = '📧 ' + t('page_current');
+    document.getElementById('add-title').textContent = '＋ ' + t('page_add_title');
+    document.getElementById('email-label').textContent = t('page_email_label');
+    document.getElementById('add-hint').textContent = t('page_add_hint');
+    document.getElementById('btn-add-email').textContent = t('page_add_button');
+    document.getElementById('btn-save').textContent = t('page_save');
+    document.getElementById('btn-close').textContent = t('page_close');
+    document.getElementById('footer-note').textContent = t('page_security');
+    document.getElementById('changes-bar').textContent = t('page_unsaved');
+    document.getElementById('err-title').innerHTML = t('page_invalid_title');
+    document.getElementById('err-desc').innerHTML = t('page_invalid_desc').replace(/\n/g, '<br>');
+  }
+
   function showError() {
+    applyI18n();
     document.getElementById('loading-container').style.display = 'none';
     document.getElementById('main-container').style.display = 'none';
     document.getElementById('error-container').style.display = 'block';
   }
 
-  // ===== サーバーからデータ取得（1回だけ） =====
+  // ===== データ読み込み =====
   function loadRecipients() {
     var container = document.getElementById('recipient-container');
-    container.innerHTML = '<div class="loading">読み込み中...</div>';
+    container.innerHTML = '<div class="loading">' + t('page_loading') + '</div>';
 
     callAPI('list_recipients', { token: TOKEN }, function(data) {
       if (data.success) {
@@ -318,168 +353,140 @@
         pendingDeletes = [];
         renderAll();
       } else {
-        container.innerHTML = '<div class="empty-state">データの取得に失敗しました</div>';
+        container.innerHTML = '<div class="empty-state">' + t('page_load_fail') + '</div>';
       }
     }, function() {
-      container.innerHTML = '<div class="empty-state">通信エラーが発生しました</div>';
+      container.innerHTML = '<div class="empty-state">' + t('page_net_err') + '</div>';
     });
   }
 
   // ===== ローカル操作 =====
-  function addLocal() {
+  function addEmailLocal() {
     var input = document.getElementById('new-email');
     var email = input.value.trim().toLowerCase();
-    if (!email) { showToast('メールアドレスを入力してください', 'error'); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('正しいメールアドレスを入力してください', 'error'); return; }
+    if (!email) { showToast(t('page_enter_email'), 'error'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast(t('page_invalid_email'), 'error'); return; }
 
-    // 既存チェック
     for (var i = 0; i < originalRecipients.length; i++) {
       if (originalRecipients[i].email.toLowerCase() === email && pendingDeletes.indexOf(originalRecipients[i].recipient_id) === -1) {
-        showToast('既に登録されています', 'error'); return;
+        showToast(t('page_exists'), 'error'); return;
       }
     }
-    // pending追加チェック
-    if (pendingAdds.indexOf(email) !== -1) {
-      showToast('既に追加予定です', 'error'); return;
+    for (var j = 0; j < pendingAdds.length; j++) {
+      if (pendingAdds[j] === email) { showToast(t('page_pending'), 'error'); return; }
     }
 
     pendingAdds.push(email);
     input.value = '';
     renderAll();
+    showToast(t('page_toast_added'), 'success');
   }
 
-  function markDelete(recipientId) {
-    pendingDeletes.push(recipientId);
+  function markDelete(rid) {
+    if (pendingDeletes.indexOf(rid) === -1) pendingDeletes.push(rid);
     renderAll();
   }
-
-  function undoDelete(recipientId) {
-    pendingDeletes = pendingDeletes.filter(function(id) { return id !== recipientId; });
+  function undoDelete(rid) {
+    pendingDeletes = pendingDeletes.filter(function(id) { return id !== rid; });
     renderAll();
   }
-
-  function undoAdd(email) {
+  function removeLocalAdd(email) {
     pendingAdds = pendingAdds.filter(function(e) { return e !== email; });
     renderAll();
   }
 
-  // ===== 画面描画 =====
+  // ===== 描画 =====
   function renderAll() {
     var container = document.getElementById('recipient-container');
     var title = document.getElementById('list-title');
-
     var activeCount = 0;
     var html = '';
 
-    // 既存受信者
     for (var i = 0; i < originalRecipients.length; i++) {
       var r = originalRecipients[i];
-      var isDeleted = pendingDeletes.indexOf(r.recipient_id) !== -1;
+      var isDel = pendingDeletes.indexOf(r.recipient_id) !== -1;
       var initial = r.email.charAt(0).toUpperCase();
       var dateStr = r.created_at ? formatDate(r.created_at) : '';
 
-      html += '<div class="recipient-item' + (isDeleted ? ' deleted' : '') + '">';
+      html += '<div class="recipient-item' + (isDel ? ' deleted' : '') + '">';
       html += '  <div class="recipient-info">';
-      html += '    <div class="recipient-avatar">' + escapeHtml(initial) + '</div>';
+      html += '    <div class="recipient-avatar">' + esc(initial) + '</div>';
       html += '    <div class="recipient-details">';
-      html += '      <div class="recipient-email">' + escapeHtml(r.email) + '</div>';
-      if (dateStr) html += '      <div class="recipient-date">追加日: ' + dateStr + '</div>';
+      html += '      <div class="recipient-email">' + esc(r.email) + '</div>';
+      if (dateStr) html += '      <div class="recipient-date">' + t('page_added_date') + ': ' + esc(dateStr) + '</div>';
       html += '    </div>';
       html += '  </div>';
-      if (isDeleted) {
-        html += '  <button class="recipient-action btn-undo" onclick="undoDelete(\'' + r.recipient_id + '\')">元に戻す</button>';
+      if (isDel) {
+        html += '  <button class="recipient-undo" onclick="undoDelete(\'' + r.recipient_id + '\')">' + t('page_undo') + '</button>';
       } else {
-        html += '  <button class="recipient-action btn-delete" onclick="markDelete(\'' + r.recipient_id + '\')" title="削除">&#x1F5D1;&#xFE0F;</button>';
+        html += '  <button class="recipient-delete" onclick="markDelete(\'' + r.recipient_id + '\')" title="Delete">&#x1F5D1;&#xFE0F;</button>';
         activeCount++;
       }
       html += '</div>';
     }
 
-    // 追加予定
     for (var j = 0; j < pendingAdds.length; j++) {
       var email = pendingAdds[j];
-      var init = email.charAt(0).toUpperCase();
-      html += '<div class="recipient-item new-item">';
+      html += '<div class="recipient-item new-added">';
       html += '  <div class="recipient-info">';
-      html += '    <div class="recipient-avatar" style="background-color: #dcfce7; color: #166534;">' + escapeHtml(init) + '</div>';
+      html += '    <div class="recipient-avatar" style="background-color: #bbf7d0; color: #166534;">' + esc(email.charAt(0).toUpperCase()) + '</div>';
       html += '    <div class="recipient-details">';
-      html += '      <div class="recipient-email">' + escapeHtml(email) + '</div>';
-      html += '      <div class="recipient-date" style="color: #166534;">新規追加</div>';
+      html += '      <div class="recipient-email">' + esc(email) + '</div>';
+      html += '      <div class="recipient-date" style="color: #166534;">' + t('page_new_unsaved') + '</div>';
       html += '    </div>';
       html += '  </div>';
-      html += '  <button class="recipient-action btn-undo" onclick="undoAdd(\'' + escapeHtml(email) + '\')">取消</button>';
+      html += '  <button class="recipient-delete" onclick="removeLocalAdd(\'' + esc(email) + '\')" title="Remove">&#x2716;</button>';
       html += '</div>';
       activeCount++;
     }
 
     if (originalRecipients.length === 0 && pendingAdds.length === 0) {
-      html = '<div class="empty-state">受信者がいません</div>';
+      html = '<div class="empty-state">' + t('page_no_recipients') + '</div>';
     }
 
     container.innerHTML = html;
-    title.textContent = '\uD83D\uDCE7 現在の受信者（' + activeCount + '名）';
+    title.textContent = '\uD83D\uDCE7 ' + t('page_current') + '（' + activeCount + t('page_count_unit') + '）';
 
-    // 変更カウント表示
-    var totalChanges = pendingAdds.length + pendingDeletes.length;
-    var changeBar = document.getElementById('change-count');
-    if (totalChanges > 0) {
-      var parts = [];
-      if (pendingAdds.length > 0) parts.push(pendingAdds.length + '件の追加');
-      if (pendingDeletes.length > 0) parts.push(pendingDeletes.length + '件の削除');
-      changeBar.textContent = '⚠ 未保存の変更: ' + parts.join('、');
-      changeBar.className = 'change-count visible';
-    } else {
-      changeBar.className = 'change-count';
-    }
+    var hasChanges = pendingAdds.length > 0 || pendingDeletes.length > 0;
+    document.getElementById('changes-bar').className = 'changes-bar' + (hasChanges ? ' visible' : '');
+    document.getElementById('btn-save').disabled = !hasChanges;
   }
 
-  // ===== 一括保存 =====
-  function submitChanges() {
-    if (pendingAdds.length === 0 && pendingDeletes.length === 0) {
-      showToast('変更がありません', 'error');
-      return;
-    }
-
+  // ===== 保存 =====
+  function saveChanges() {
+    if (pendingAdds.length === 0 && pendingDeletes.length === 0) return;
     var btn = document.getElementById('btn-save');
     btn.disabled = true;
-    btn.textContent = '保存中...';
+    btn.textContent = t('page_saving');
 
     var apiParams = { token: TOKEN };
-    if (pendingAdds.length > 0) {
-      apiParams.add_emails = pendingAdds.join(',');
-    }
-    if (pendingDeletes.length > 0) {
-      apiParams.delete_ids = pendingDeletes.join(',');
-    }
+    if (pendingAdds.length > 0) apiParams.add_emails = pendingAdds.join(',');
+    if (pendingDeletes.length > 0) apiParams.delete_ids = pendingDeletes.join(',');
 
     callAPI('save_changes', apiParams, function(data) {
-      btn.disabled = false;
-      btn.textContent = '\uD83D\uDCBE 変更を保存';
+      btn.textContent = t('page_save');
       if (data.success) {
-        var msg = '保存しました';
-        if (data.added > 0) msg += '（追加: ' + data.added + '件';
-        if (data.deleted > 0) msg += (data.added > 0 ? '、' : '（') + '削除: ' + data.deleted + '件';
-        if (data.added > 0 || data.deleted > 0) msg += '）';
-        showToast('✓ ' + msg, 'success');
-        // サーバーから再取得
+        var msg = '';
+        if (data.added > 0) msg += data.added + t('page_count_add');
+        if (data.deleted > 0) msg += (msg ? '、' : '') + data.deleted + t('page_count_del');
+        showToast('✓ ' + msg + t('page_save_ok'), 'success');
         loadRecipients();
       } else {
-        showToast('保存に失敗しました: ' + (data.error || ''), 'error');
+        btn.disabled = false;
+        showToast(t('page_save_fail') + ': ' + (data.error || ''), 'error');
       }
     }, function() {
+      btn.textContent = t('page_save');
       btn.disabled = false;
-      btn.textContent = '\uD83D\uDCBE 変更を保存';
-      showToast('通信エラーが発生しました', 'error');
+      showToast(t('page_net_err'), 'error');
     });
   }
 
-  // ===== API呼び出し =====
+  // ===== API =====
   function callAPI(action, params, onSuccess, onError) {
     var url = GAS_URL + '?action=' + encodeURIComponent(action);
     for (var key in params) {
-      if (key !== 'action') {
-        url += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
-      }
+      if (key !== 'action') url += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
     }
     fetch(url, { method: 'GET', redirect: 'follow' })
       .then(function(r) { return r.text(); })
@@ -495,16 +502,14 @@
     try { var d = new Date(isoStr); return (d.getMonth() + 1) + '/' + d.getDate(); }
     catch (e) { return ''; }
   }
-  function escapeHtml(str) {
-    var div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+  function esc(str) {
+    var d = document.createElement('div'); d.textContent = str; return d.innerHTML;
   }
   function showToast(message, type) {
-    var toast = document.getElementById('toast');
-    toast.textContent = message;
-    toast.className = 'toast ' + type + ' active';
-    setTimeout(function() { toast.className = 'toast'; }, 3000);
+    var el = document.getElementById('toast');
+    el.textContent = message;
+    el.className = 'toast ' + type + ' active';
+    setTimeout(function() { el.className = 'toast'; }, 3000);
   }
 </script>
 
