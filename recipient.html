@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>受信者管理 - Optec Express</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+      background-color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px 16px;
+    }
+    .container {
+      background-color: #ffffff;
+      border-radius: 12px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+      color: white;
+      padding: 20px 24px;
+    }
+    .header h2 { font-size: 18px; font-weight: 600; }
+    .header p { font-size: 12px; opacity: 0.8; margin-top: 4px; }
+    .body-content { padding: 20px; }
+    .awb-info {
+      background-color: #f8fafc;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .awb-info-icon { font-size: 24px; }
+    .awb-info-label { font-size: 11px; color: #64748b; }
+    .awb-info-value { font-size: 15px; font-weight: 600; color: #1a365d; font-family: 'Courier New', monospace; }
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a365d;
+      margin-bottom: 12px;
+    }
+    .recipient-list { margin-bottom: 24px; }
+    .recipient-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background-color: #f8fafc;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .recipient-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .recipient-avatar {
+      width: 36px;
+      height: 36px;
+      background-color: #e2e8f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+      flex-shrink: 0;
+    }
+    .recipient-details { flex: 1; min-width: 0; }
+    .recipient-email { font-size: 14px; color: #1e293b; font-weight: 500; word-break: break-all; }
+    .recipient-date { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .recipient-delete {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 16px;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .recipient-delete:hover { background-color: #fee2e2; color: #dc2626; }
+    .add-form {
+      background-color: #f8fafc;
+      border-radius: 8px;
+      padding: 16px;
+      border: 1px dashed #cbd5e1;
+    }
+    .form-label { display: block; font-size: 12px; font-weight: 500; color: #475569; margin-bottom: 6px; }
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+    .form-hint { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+    .btn-add {
+      width: 100%;
+      padding: 12px;
+      background-color: #1a365d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background-color 0.2s;
+    }
+    .btn-add:hover { background-color: #2c5282; }
+    .btn-add:disabled { background-color: #94a3b8; cursor: not-allowed; }
+    .footer {
+      padding: 16px 24px;
+      background-color: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-note { font-size: 11px; color: #94a3b8; }
+    .btn-close {
+      padding: 10px 24px;
+      background-color: #e2e8f0;
+      color: #475569;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-close:hover { background-color: #cbd5e1; }
+    .toast {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 100;
+      color: white;
+    }
+    .toast.success { background-color: #059669; }
+    .toast.error { background-color: #dc2626; }
+    .toast.active { display: block; animation: slideUp 0.3s ease-out; }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    .loading { text-align: center; padding: 40px; color: #94a3b8; font-size: 14px; }
+    .empty-state { text-align: center; padding: 20px; color: #94a3b8; font-size: 13px; }
+    .error-page { text-align: center; padding: 60px 20px; }
+    .error-page h2 { font-size: 20px; color: #1a365d; margin-bottom: 12px; }
+    .error-page p { font-size: 14px; color: #64748b; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<!-- エラー表示（トークン無効時） -->
+<div class="container" id="error-container" style="display: none;">
+  <div class="header">
+    <h2>&#x1F6A8; リンクが無効です</h2>
+  </div>
+  <div class="error-page">
+    <p>このリンクは期限切れか、無効です。<br>最新のメール通知に含まれるリンクをご利用ください。</p>
+  </div>
+</div>
+
+<!-- メイン画面 -->
+<div class="container" id="main-container" style="display: none;">
+  <div class="header">
+    <h2>&#x1F465; 追跡通知の受信者管理</h2>
+    <p>この貨物のステータス更新を受け取る方を管理できます</p>
+  </div>
+
+  <div class="body-content">
+    <div class="awb-info">
+      <div class="awb-info-icon">&#x1F4E6;</div>
+      <div>
+        <div class="awb-info-label">対象AWB</div>
+        <div class="awb-info-value" id="awb-display">---</div>
+      </div>
+    </div>
+
+    <div class="recipient-list">
+      <div class="section-title" id="list-title">&#x1F4E7; 現在の受信者</div>
+      <div id="recipient-container">
+        <div class="loading">読み込み中...</div>
+      </div>
+    </div>
+
+    <div class="add-form">
+      <div class="section-title">&#xFF0B; 新しい受信者を追加</div>
+      <div>
+        <label class="form-label">メールアドレス</label>
+        <input type="email" class="form-input" id="new-email" placeholder="example@company.com">
+      </div>
+      <div class="form-hint">※ 追加された方には次回の更新から通知が届きます</div>
+      <button class="btn-add" id="btn-add" onclick="addRecipient()">&#xFF0B; 受信者を追加する</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-note">&#x1F512; セキュリティのため、このリンクは15日間有効です</div>
+    <button class="btn-close" onclick="window.close()">閉じる</button>
+  </div>
+</div>
+
+<!-- ローディング -->
+<div class="container" id="loading-container">
+  <div class="loading" style="padding: 80px 20px;">読み込み中...</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ★ GAS Web App URL
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbz0EYQjd26AhaRDhMLdGxr4mKxgzkYCEPTXVYFxY28vzBSGQ4toguTHX8J1LPBTstp5/exec';
+
+  // URL パラメータからトークン取得
+  var params = new URLSearchParams(window.location.search);
+  var TOKEN = params.get('token') || '';
+
+  window.onload = function() {
+    if (!TOKEN) {
+      showError();
+      return;
+    }
+    // トークン検証
+    callAPI('validate_token', { token: TOKEN }, function(data) {
+      if (data.success) {
+        document.getElementById('awb-display').textContent = data.awb_display;
+        document.getElementById('loading-container').style.display = 'none';
+        document.getElementById('main-container').style.display = 'block';
+        loadRecipients();
+      } else {
+        showError();
+      }
+    }, function() {
+      showError();
+    });
+  };
+
+  // Enter キーで追加
+  document.addEventListener('DOMContentLoaded', function() {
+    var input = document.getElementById('new-email');
+    if (input) {
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') addRecipient();
+      });
+    }
+  });
+
+  function showError() {
+    document.getElementById('loading-container').style.display = 'none';
+    document.getElementById('main-container').style.display = 'none';
+    document.getElementById('error-container').style.display = 'block';
+  }
+
+  function loadRecipients() {
+    var container = document.getElementById('recipient-container');
+    container.innerHTML = '<div class="loading">読み込み中...</div>';
+
+    callAPI('list_recipients', { token: TOKEN }, function(data) {
+      if (data.success) {
+        renderRecipients(data.recipients);
+      } else {
+        container.innerHTML = '<div class="empty-state">データの取得に失敗しました</div>';
+      }
+    }, function() {
+      container.innerHTML = '<div class="empty-state">通信エラーが発生しました</div>';
+    });
+  }
+
+  function renderRecipients(recipients) {
+    var container = document.getElementById('recipient-container');
+    var title = document.getElementById('list-title');
+    title.textContent = '\uD83D\uDCE7 現在の受信者（' + recipients.length + '名）';
+
+    if (recipients.length === 0) {
+      container.innerHTML = '<div class="empty-state">受信者がいません</div>';
+      return;
+    }
+
+    var html = '';
+    for (var i = 0; i < recipients.length; i++) {
+      var r = recipients[i];
+      var initial = r.email.charAt(0).toUpperCase();
+      var dateStr = r.created_at ? formatDate(r.created_at) : '';
+      var subText = dateStr ? '追加日: ' + dateStr : '';
+      if (r.added_by === 'EMAIL_LINK') {
+        subText += subText ? ' · メールリンクから追加' : 'メールリンクから追加';
+      }
+
+      html += '<div class="recipient-item" id="rcpt-' + r.recipient_id + '">';
+      html += '  <div class="recipient-info">';
+      html += '    <div class="recipient-avatar">' + escapeHtml(initial) + '</div>';
+      html += '    <div class="recipient-details">';
+      html += '      <div class="recipient-email">' + escapeHtml(r.email) + '</div>';
+      if (subText) html += '      <div class="recipient-date">' + escapeHtml(subText) + '</div>';
+      html += '    </div>';
+      html += '  </div>';
+      html += '  <button class="recipient-delete" onclick="deleteRecipient(\'' + r.recipient_id + '\', \'' + escapeHtml(r.email) + '\')" title="削除">&#x1F5D1;&#xFE0F;</button>';
+      html += '</div>';
+    }
+
+    container.innerHTML = html;
+  }
+
+  function addRecipient() {
+    var input = document.getElementById('new-email');
+    var email = input.value.trim();
+    if (!email) {
+      showToast('メールアドレスを入力してください', 'error');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showToast('正しいメールアドレスを入力してください', 'error');
+      return;
+    }
+
+    var btn = document.getElementById('btn-add');
+    btn.disabled = true;
+    btn.textContent = '追加中...';
+
+    callAPI('add_recipient', { token: TOKEN, email: email }, function(data) {
+      btn.disabled = false;
+      btn.textContent = '\uFF0B 受信者を追加する';
+      if (data.success) {
+        showToast('✓ ' + email + ' を追加しました', 'success');
+        input.value = '';
+        loadRecipients();
+      } else {
+        if (data.error === 'Already exists') {
+          showToast('このメールアドレスは既に登録されています', 'error');
+        } else {
+          showToast('追加に失敗しました: ' + (data.error || ''), 'error');
+        }
+      }
+    }, function() {
+      btn.disabled = false;
+      btn.textContent = '\uFF0B 受信者を追加する';
+      showToast('通信エラーが発生しました', 'error');
+    });
+  }
+
+  function deleteRecipient(recipientId, email) {
+    if (!confirm(email + ' を受信者リストから削除しますか？')) return;
+
+    callAPI('delete_recipient', { token: TOKEN, recipient_id: recipientId }, function(data) {
+      if (data.success) {
+        showToast('✓ ' + email + ' を削除しました', 'success');
+        loadRecipients();
+      } else {
+        showToast('削除に失敗しました', 'error');
+      }
+    }, function() {
+      showToast('通信エラーが発生しました', 'error');
+    });
+  }
+
+  // ===== GAS API 呼び出し =====
+  function callAPI(action, params, onSuccess, onError) {
+    var url = GAS_URL + '?action=' + encodeURIComponent(action);
+    for (var key in params) {
+      if (key !== 'action') {
+        url += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+      }
+    }
+
+    fetch(url, { method: 'GET', redirect: 'follow' })
+      .then(function(response) {
+        // GAS は 302 リダイレクトする場合あり
+        return response.text();
+      })
+      .then(function(text) {
+        try {
+          var data = JSON.parse(text);
+          onSuccess(data);
+        } catch (e) {
+          // GAS リダイレクト後の HTML が返る場合がある
+          // リダイレクト先を再取得
+          if (text.indexOf('DOCTYPE') !== -1) {
+            onError();
+          } else {
+            onError();
+          }
+        }
+      })
+      .catch(function(err) {
+        if (onError) onError(err);
+      });
+  }
+
+  // ===== ユーティリティ =====
+  function formatDate(isoStr) {
+    try {
+      var d = new Date(isoStr);
+      return (d.getMonth() + 1) + '/' + d.getDate();
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function showToast(message, type) {
+    var toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = 'toast ' + type + ' active';
+    setTimeout(function() { toast.className = 'toast'; }, 3000);
+  }
+</script>
+
+</body>
+</html>
