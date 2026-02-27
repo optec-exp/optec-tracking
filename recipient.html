@@ -248,7 +248,7 @@
     page_save:           { ja: '変更を保存', en: 'Save Changes', zh: '保存更改' },
     page_cancel:         { ja: 'キャンセル', en: 'Cancel', zh: '取消' },
     page_close:          { ja: '閉じる', en: 'Close', zh: '关闭' },
-    page_security:       { ja: '🔒 セキュリティのため、このリンクは15日間有効です', en: '🔒 This link is valid for 15 days', zh: '🔒 出于安全考虑，此链接有效期为15天' },
+    page_security:       { ja: '🔒 セキュリティのため、このリンクは3日間有効です', en: '🔒 This link is valid for 3 days', zh: '🔒 出于安全考虑，此链接有效期为3天' },
     page_unsaved:        { ja: '⚠ 未保存の変更があります。「変更を保存」ボタンを押してください。', en: '⚠ You have unsaved changes. Press "Save Changes".', zh: '⚠ 有未保存的更改，请点击"保存更改"。' },
     page_added_date:     { ja: '追加日', en: 'Added', zh: '添加日期' },
     page_from_link:      { ja: 'メールリンクから追加', en: 'Added via email link', zh: '通过邮件链接添加' },
@@ -445,7 +445,7 @@
     }
 
     container.innerHTML = html;
-    title.textContent = '\uD83D\uDCE7 ' + t('page_current') + '（' + activeCount + t('page_count_unit') + '）';
+    title.textContent = '\uD83D\uDCE7 ' + t('page_current') + '（' + activeCount + '）';
 
     var hasChanges = pendingAdds.length > 0 || pendingDeletes.length > 0;
     document.getElementById('changes-bar').className = 'changes-bar' + (hasChanges ? ' visible' : '');
